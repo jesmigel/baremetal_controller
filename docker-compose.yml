@@ -1,0 +1,9 @@
+version: '2'
+services:
+  k8s-mgr:
+    extends:
+      file: ./compose/rancher/rancher.yml
+      service: rancher
+    ports:
+      - "80:80"
+      - "443:443"
