@@ -20,7 +20,7 @@ _ESXI_ISO=$(HOME)/VMware-VMvisor-Installer-6.7.0.update03-14320388.x86_64.iso
 _ESXI_JSON=$(PWD)/submodules/packer-maas/vmware-esxi/vmware.esxi.json
 packer_build:
 	cp -f ./config/vmware.esxi.json $(_ESXI_JSON)
-	$(call f_packer, $(_ESXI_ISO),$(_ESXI_JSON))
+	$(call f_packer,$(_ESXI_ISO),$(_ESXI_JSON))
 # $1:	ISO absolute path
 # $2:	Packer input json
 define f_packer
