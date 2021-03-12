@@ -20,6 +20,7 @@
             "disk_size": "20G",
             "headless": true,
             "memory": 8192,
+            "vnc_bind_address": "0.0.0.0",
             "http_directory": "http",
             "format": "raw",
             "net_device": "vmxnet3",
