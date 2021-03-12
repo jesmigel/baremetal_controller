@@ -7,4 +7,5 @@ down:
 	vagrant down
 
 clean:
-	vagrant destroy
+	vagrant destroy -f
+
