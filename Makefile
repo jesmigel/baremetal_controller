@@ -17,7 +17,7 @@ sm_init:
 	git submodule update --init --recursive
 
 _ESXI_ISO=$(HOME)/VMware-VMvisor-Installer-6.7.0.update03-14320388.x86_64.iso
-_ESXI_JSON=$(PWD)/packer-maas/vmware-esxi/vmware.esxi.json
+_ESXI_JSON=$(PWD)/submodules/packer-maas/vmware-esxi/vmware.esxi.json
 packer_build:
 	cp -f ./config/vmware.esxi.json $(_ESXI_JSON)
 	$(call f_packer, $(_ESXI_ISO), $(_ESXI_JSON))
