@@ -24,7 +24,7 @@ packer_build:
 # $1:	ISO absolute path
 # $2:	Packer input json
 define f_packer
-	sudo bash -c '
+	sudo bash -c ' \
 	export PACKER_LOG=1 && \
 	packer build -var "vmware_esxi_iso_path=$(1)" $(2) '
 endef
