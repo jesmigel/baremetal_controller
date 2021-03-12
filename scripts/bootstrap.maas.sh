@@ -1,11 +1,12 @@
 #!/bin/bash
 # CONFIRM env vars
-if [ $# -ne 4 ]; then
+if [ $# -ne 5 ]; then
     echo "Missing arguments detected"
     echo "\$1: MaaS admin ID"
     echo "\$2: MaaS host IP"
     echo "\$3: MaaS admin password"
-    echo "\$4: Github ID. Used by MaaS to procure pub key for provisioned hosts"
+    echo "\$4: MaaS admin email"
+    echo "\$5: Github ID. Used by MaaS to procure pub key for provisioned hosts"
     exit -1
 fi
 
