@@ -40,8 +40,10 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
   echo "TEST BOOTSTRAP SCRIPTS"
+  chmod -R +x /mnt/scripts/
   echo "TEST1: MAAS"
-  chmod +x /mnt/scripts/bootstrap.maas.sh
   /mnt/scripts/bootstrap.maas.sh test_user test_password test_email@test.com jesmigel
+  echo "TEST2: PACKER"
+  /mnt/scripts/bootstrap.packer.sh
   SHELL
 end
