@@ -26,6 +26,7 @@ packer_build:
 # $2:	Packer input json
 define f_packer
 	sudo bash -c ' \
+	cd $(_ESXI_PATH) && \
 	PACKER_LOG=1 \
 	packer build -var "vmware_esxi_iso_path=$(1)" $(2) '
 endef
