@@ -7,11 +7,13 @@
             "type": "qemu",
             "communicator": "none",
             "iso_url": "{{user `vmware_esxi_iso_path`}}",
-            "iso_checksum_type": "none",
+            "iso_checksum": "none",
             "boot_command": [
                 "<enter><wait>",
                 "<leftShift>O",
-                " ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/vmware-esxi-ks.cfg<enter>"
+                " ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/vmware-esxi-ks.cfg",
+                " com1_Port=0x3f8 tty2Port=com1",
+                "<enter>"
             ],
             "boot_wait": "3s",
             "disk_interface": "ide",
@@ -24,9 +26,10 @@
             "net_device": "e1000",
             "qemuargs": [
                 [ "-cpu", "host" ],
-                [ "-smp", "2,sockets=2,cores=1,threads=1" ]
+                [ "-smp", "2,sockets=2,cores=1,threads=1" ],
+                [ "-serial", "stdio" ]
             ],
-            "shutdown_timeout": "20m"
+            "shutdown_timeout": "1h"
         }
     ],
     "post-processors": [
@@ -34,23 +37,19 @@
             "type": "shell-local",
             "inline_shebang": "/bin/bash -e",
             "inline": [
+                "echo 'Syncing output-qemu/packer-qemu...'",
                 "sync -f output-qemu/packer-qemu",
+                "IMG_FMT=raw",
+                "source ../scripts/setup-nbd",
                 "TMP_DIR=$(mktemp -d /tmp/packer-maas-XXXX)",
-                "echo 'Checking kernel module nbd'",
-                "modprobe nbd",
-                "echo 'Unmounting nbd4'",
-                "qemu-nbd -d /dev/nbd4",
-                "echo 'Mounting nbd4'",
-                "qemu-nbd -c /dev/nbd4 -f raw -n output-qemu/packer-qemu",
-                "partprobe /dev/nbd4",
-                "mount /dev/nbd4p1 $TMP_DIR",
-                "mkdir -p $TMP_DIR/curtin",
                 "echo 'Adding curtin-hooks to image...'",
+                "mount ${nbd}p1 $TMP_DIR",
+                "mkdir -p $TMP_DIR/curtin",
                 "cp curtin-hooks $TMP_DIR/curtin",
                 "sync -f $TMP_DIR/curtin",
                 "umount $TMP_DIR",
                 "echo 'Adding post-install scripts to image...'",
-                "mount /dev/nbd4p6 $TMP_DIR",
+                "mount ${nbd}p6 $TMP_DIR",
                 "mkdir -p $TMP_DIR/maas",
                 "cp -r pyyaml/lib3/yaml $TMP_DIR/maas",
                 "cp -r oauthlib/oauthlib $TMP_DIR/maas",
@@ -65,9 +64,10 @@
                 "cp storage-esxi $TMP_DIR/maas",
                 "cp vendor-data-esxi $TMP_DIR/maas",
                 "cp vcenter $TMP_DIR/maas",
+                "echo 'Unmounting image...'",
                 "sync -f $TMP_DIR/maas",
                 "umount $TMP_DIR",
-                "qemu-nbd -d /dev/nbd4",
+                "qemu-nbd -d $nbd",
                 "rmdir $TMP_DIR"
             ]
         },
