@@ -28,9 +28,11 @@ _ESXI_JSON=vmware.esxi.json
 packer_build:
 	cp -f ./config/vmware.esxi.json $(_ESXI_PATH)/$(_ESXI_JSON)
 	$(call f_packer_build,$(_ESXI_ISO),$(_ESXI_JSON))
+	mv $(_ESXI_PATH)/vmware-esxi.dd.gz .
 
 .PHONY: maas_auth
-_MAAS_API=http://192.168.122.1:5240/MAAS/
+_MAAS_USER=""
+_MAAS_API=""
 maas_auth:
 	@echo "_MAAS_USER env var must be set"
 	maas login $(_MAAS_USER) $(_MAAS_API)
@@ -39,12 +41,12 @@ _MAAS_IMG_NAME=""
 _MAAS_IMG_TITLE=""
 _MAAS_IMG_FILE=""
 maas_push: 
-	$(call f_maas,)
+	$(call f_maas,$(_MAAS_IMG_NAME),$(_MAAS_IMG_TITLE),$(_MAAS_IMG_FILE))
 
 # MAAS push image
 define f_maas
 	maas admin boot-resources create name='$1' \
-	title='$2'
+	title='$2' \
 	architecture='amd64/generic' filetype='ddgz' \
 	content@=$3
 endef
