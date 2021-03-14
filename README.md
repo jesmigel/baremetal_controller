@@ -1,13 +1,13 @@
 # jc_controller
 Repository for bootstrapping a cluster controller.
 
-## Requirements: Software
+## Requirements: software
 - [Ubuntu 20.04 LTS](https://releases.ubuntu.com/)
 - [Canonical MaaS](https://maas.io/docs/snap/2.9/ui/installation)
 - [Packer](https://learn.hashicorp.com/tutorials/packer/getting-started-install)
 - [VMWare ESXI](https://www.vmware.com/au/products/esxi-and-esx.html)
 
-## Sample Requirements: Hardware
+## Requirements: sample hardware
 - Dell Poweredge r710 (3x)
 - Dell Poweredge r810 (2x)
 
@@ -15,7 +15,7 @@ Repository for bootstrapping a cluster controller.
 - Create a bootable flashdrive of Install Ubuntu 20.04 LTS through [balenaEtcher](https://www.balena.io/etcher/)
 - Install Ubuntu 20.04 LTS to a r710
 
-## Bootstrap: Controller
+## Bootstrap: controller
 - Login to the controller host and execute the succeeding shell commands
 ```bash
 # Clone github repo
