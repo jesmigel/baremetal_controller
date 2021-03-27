@@ -33,11 +33,11 @@ clean:
 
 .PHONY: sm_init sm_update sm_sync
 sm_init:
-	$(call f_packer_build,"update --init --recursive")
+	$(call f_git_sub,"update --init --recursive")
 sm_update:
-	$(call f_packer_build,"update --recursive")
+	$(call f_git_sub,"update --recursive")
 sm_sync:
-	$(call f_packer_build,"sync --recursive")
+	$(call f_git_sub,"sync --recursive")
 
 
 .PHONY: packer_build
