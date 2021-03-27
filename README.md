@@ -1,5 +1,5 @@
 # jc_controller
-Repository for bootstrapping a cluster controller.
+Repository for bootstrapping a baremetal cluster controller.
 
 ## Requirements: software
 - [Ubuntu 20.04 LTS](https://releases.ubuntu.com/)
