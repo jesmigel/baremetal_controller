@@ -1,8 +1,27 @@
-.PHONY: up down clean
+.PHONY: up down clean printenv
 
 # LOCAL TESTING
 #	Vagrant: Virtual Machine Manager
 #	Packer: ISO Builder
+
+# IMPORT ENV FILES
+_ENV_DIR=./env
+include $(_ENV_DIR)/sample.maas.env
+include $(_ENV_DIR)/sample.esxi.67.env
+
+printenv:
+	@echo "MAAS ENV VARS:"
+	@echo "_MAAS_USER: $(_MAAS_USER)"
+	@echo "_MAAS_API: $(_MAAS_API)"
+	@echo ""
+	@echo "PACKER ENV VARS"
+	@echo "_ESXI_ISO: $(_ESXI_ISO)"
+	@echo "_ESXI_PATH: $(_ESXI_PATH)"
+	@echo "_ESXI_JSON: $(_ESXI_JSON)"
+	@echo "_MAAS_IMG_NAME: $(_MAAS_IMG_NAME)"
+	@echo "_MAAS_IMG_TITLE: $(_MAAS_IMG_TITLE)"
+	@echo "_MAAS_IMG_FILE: $(_MAAS_IMG_FILE)"
+
 up:
 	vagrant up
 
@@ -22,24 +41,17 @@ sm_sync:
 
 
 .PHONY: packer_build
-_ESXI_ISO=$(HOME)/VMware-VMvisor-Installer-6.7.0.update03-14320388.x86_64.iso
-_ESXI_PATH=$(PWD)/submodules/packer-maas/vmware-esxi
-_ESXI_JSON=vmware.esxi.json
+
 packer_build:
 	cp -f ./config/vmware.esxi.json $(_ESXI_PATH)/$(_ESXI_JSON)
 	$(call f_packer_build,$(_ESXI_ISO),$(_ESXI_JSON))
 	mv $(_ESXI_PATH)/vmware-esxi.dd.gz .
 
 .PHONY: maas_auth
-_MAAS_USER=""
-_MAAS_API=""
 maas_auth:
 	@echo "_MAAS_USER env var must be set"
 	maas login $(_MAAS_USER) $(_MAAS_API)
 
-_MAAS_IMG_NAME=""
-_MAAS_IMG_TITLE=""
-_MAAS_IMG_FILE=""
 maas_push: 
 	$(call f_maas,$(_MAAS_IMG_NAME),$(_MAAS_IMG_TITLE),$(_MAAS_IMG_FILE))
 
