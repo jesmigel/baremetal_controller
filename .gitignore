@@ -1,2 +1,5 @@
 # ENV FILES
 **/**.env
+
+# RAW FILES
+**/**.gz

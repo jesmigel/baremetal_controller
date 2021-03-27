@@ -45,7 +45,7 @@ sm_sync:
 packer_build:
 	cp -f ./config/vmware.esxi.json $(_ESXI_PATH)/$(_ESXI_JSON)
 	$(call f_packer_build,$(_ESXI_ISO),$(_ESXI_JSON))
-	mv $(_ESXI_PATH)/vmware-esxi.dd.gz .
+	mv $(_ESXI_PATH)/vmware-esxi.dd.gz ./$(_MAAS_IMG_FILE)
 
 .PHONY: maas_auth
 maas_auth:
