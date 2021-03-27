@@ -6,17 +6,19 @@
 
 # IMPORT ENV FILES
 _ENV_DIR=./env
-include $(_ENV_DIR)/sample.maas.env
+include $(_ENV_DIR)/sample.bmc_controller.env
 include $(_ENV_DIR)/sample.esxi.67.env
 
 printenv:
-	@echo "MAAS ENV VARS:"
+	@echo "BMC CONTROLLER ENV VARS:"
 	@echo "_MAAS_USER: $(_MAAS_USER)"
 	@echo "_MAAS_API: $(_MAAS_API)"
-	@echo ""
-	@echo "PACKER ENV VARS"
-	@echo "_ESXI_ISO: $(_ESXI_ISO)"
 	@echo "_ESXI_PATH: $(_ESXI_PATH)"
+	@echo "_ESXI_JSON: $(_ESXI_JSON)"
+	@echo "_ESXI_QEMU_FS: $(_ESXI_QEMU_FS)"
+	@echo ""
+	@echo "PACKER INPUT ENV VARS"
+	@echo "_ESXI_ISO: $(_ESXI_ISO)"
 	@echo "_ESXI_JSON: $(_ESXI_JSON)"
 	@echo "_MAAS_IMG_NAME: $(_MAAS_IMG_NAME)"
 	@echo "_MAAS_IMG_TITLE: $(_MAAS_IMG_TITLE)"
@@ -46,6 +48,8 @@ packer_build:
 	cp -f ./config/vmware.esxi.json $(_ESXI_PATH)/$(_ESXI_JSON)
 	$(call f_packer_build,$(_ESXI_ISO),$(_ESXI_JSON))
 	mv $(_ESXI_PATH)/vmware-esxi.dd.gz ./$(_MAAS_IMG_FILE)
+	# CLEANUP OF PACKER RAW FS OUTPUT
+	sudo rm -rf $(_ESXI_QEMU_FS)
 
 .PHONY: maas_auth
 maas_auth:
