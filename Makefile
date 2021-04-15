@@ -57,14 +57,14 @@ maas_auth:
 	maas login $(_MAAS_USER) $(_MAAS_API)
 
 maas_push: 
-	$(call f_maas,$(_MAAS_IMG_NAME),$(_MAAS_IMG_TITLE),$(_MAAS_IMG_FILE))
+	$(call f_maas,$(_MAAS_USER),$(_MAAS_IMG_NAME),$(_MAAS_IMG_TITLE),$(_MAAS_IMG_FILE))
 
 # MAAS push image
 define f_maas
-	maas admin boot-resources create name='$1' \
-	title='$2' \
+	maas $1 boot-resources create name='$2' \
+	title='$3' \
 	architecture='amd64/generic' filetype='ddgz' \
-	content@=$3
+	content@=$4
 endef
 
 # PACKER BUILD
