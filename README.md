@@ -1,4 +1,4 @@
-# jc_controller
+# baremetal_controller
 Repository for bootstrapping a baremetal cluster controller.
 
 ## Requirements: software
